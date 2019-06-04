@@ -5,8 +5,8 @@
     <div class="keyboard">
       <div class="keyboard-row" v-for="keys in keyList">
         <template v-for="key in keys">
-          <span class="keyboard-key" @touchstart="onKeyTouchstart" @touchend="onKeyTouchend" @click="onKeyClick(key)" :style="{'width': (100 / keys.length) + '%'}" v-if="key !== ''">{{key}}</span>
-          <span class="keyboard-key-blank" :style="{'width': (100 / keys.length) + '%'}" v-else></span>
+          <span class="keyboard-key-blank" :style="{'width': key.span ? renderWidth(key.span) : (100 / keys.length) + '%'}" v-if="key === '' || key.code === ''"></span>
+          <span class="keyboard-key" @touchstart="onKeyTouchstart(key)" @touchend="onKeyTouchend(key)" :style="{'width': key.span ? renderWidth(key.span) : (100 / keys.length) + '%'}" v-else>{{key.code || key}}</span>
         </template>
       </div>
     </div>
@@ -14,6 +14,9 @@
 </template>
 
 <script>
+    import { debounce } from 'debounce';
+    let timer = null;
+
     export default {
         name: 'keyboard',
         props: {
@@ -40,9 +43,8 @@
                     ['4', '5', '6'],
                     ['7', '8', '9'],
                     ['', '0', '删除']],
-                keyList () {
-                    return this.defaultKeyList;
-                }
+                keyList: [],
+                _debounce: null
             }
         },
         watch: {
@@ -56,23 +58,60 @@
                 this.keyList = li.length ? li : this.defaultKeyList;
             }
         },
-        mounted () {
+        created () {
+            this.keyList = this.defaultKeyList;
         },
         methods: {
+            renderWidth (span) {
+                let arr = span.split('/'),
+                    numerator = parseInt(arr[0]),
+                    denominator = parseInt(arr[1]);
+                return (100 / denominator * numerator) + '%';
+            },
             onKeyClick (key) {
-                if (key === this.deleteKey) {
-                    this.$emit('on-delete', '');
-                } else if (key === this.confirmKey) {
+                if (key === this.confirmKey) {
                     this.showSync = false;
                 } else {
                     this.$emit('on-key-click', key);
                 }
             },
-            onKeyTouchstart (e) {
-                e.target.classList.add('active');
+            onDelete () {
+                this.$emit('on-delete', '');
             },
-            onKeyTouchend (e) {
-                e.target.classList.remove('active');
+            onKeyTouchstart (key) {
+                let vm = this,
+                    event = window.event || arguments[0],
+                    target = event.srcElement || event.target;
+                event.preventDefault();
+                target.classList.add('active');
+                this._debounce = debounce(() => {
+                    timer = setInterval(() => {
+                        if (key === vm.deleteKey || key.code === vm.deleteKey) {
+                            vm.onDelete();
+                        }
+                    }, 100);
+                }, 200);
+                this._debounce();
+            },
+            onKeyTouchend (key) {
+                let event = window.event || arguments[0],
+                    target = event.srcElement || event.target;
+                target.classList.remove('active');
+                if (typeof key === 'string' || typeof key === 'number') {
+                    if (key === this.deleteKey) {
+                        this.onDelete();
+                    } else {
+                        this.onKeyClick(key);
+                    }
+                } else {
+                    if (key.code === this.deleteKey) {
+                        this.onDelete();
+                    } else {
+                        this.onKeyClick(key.alias || key.code);
+                    }
+                }
+                this._debounce && this._debounce.clear();
+                clearInterval(timer);
             }
         }
     }
@@ -110,10 +149,10 @@
         display: block;
         text-align: center;
         padding: 0.3rem;
-        &:nth-child(1), &:nth-child(3) {
+        &:nth-child(1) {
           margin-left: @keyMargin;
-          margin-right: @keyMargin;
         }
+        margin-right: @keyMargin;
       }
     }
   }

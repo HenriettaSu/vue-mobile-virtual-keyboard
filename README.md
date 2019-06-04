@@ -8,13 +8,25 @@
 
 我要有一個自定義的鍵盤！
 
-~~可能會做成一個plugin，但遙遙無期~~
+支持插件形式調用
 
 ## 長這樣
 
 ![運行](./demo.png)
 
 ## 註冊
+
+### 全局註冊
+
+```javascript
+// 在入口文件全局引入
+import Vue from 'vue';
+import KeyboardComponent from './plugin/keyboard';
+
+Vue.component(KeyboardComponent);
+```
+
+### 局部註冊
 
 ```vue
 <script>
@@ -28,11 +40,34 @@ export default {
 </script>
 ```
 
-## 使用
+## DEMO
 
 考慮到自由性，暫時不準備將組件和 `input` 強綁定在一起，缺點就是值要自己處理了
 
 下例為精簡demo，如果一個頁面中存在兩個不同佈局的鍵盤，可詳細參看完整demo：`src/pages/index.vue`
+
+### 插件使用
+
+```javascript
+// 顯示
+this.$keyboard.show({
+    onKeyClick (key) {},
+    onDelete () {}
+});
+
+// 隱藏
+this.$keyboard.hide();
+
+// 獲取顯示狀態
+this.$keyboard.isVisible();
+
+// 更新配置
+this.$keyboard.update({
+    propKeyList: lowerKeyList
+});
+```
+
+### template使用
 
 ```vue
 <div class="demo-input">
@@ -65,17 +100,50 @@ export default {
 </script>
 ```
 
+## API
+
+**插件使用和template使用中，可使用的屬性和事件是一樣的，區別為：插件使用時屬性事件命名為 `駝峰`**
+
 ### 屬性
 
 - show [Boolean]：顯示
-- propKey-list [Array]：鍵盤key，默認為九宮數字鍵盤。每一行的按鍵大小為 `(100 / 當行按鍵數)%`
+
+- propKey-list [Array]：鍵盤keymap，默認為九宮數字鍵盤
+
+  數組中按鈕接收三種格式：String，Number，Object
+
+  [String，Number]：每一行的按鍵大小為 `(100 / 當行按鍵數)%`
+
+  [Object]：必須定義 `code` 和 `span` 屬性，`alias` 選填
+
+  ```javascript
+  {
+      code: 'space', // 按鍵顯示名
+      span: '5/8', // 佔用寬度，分子/分母
+      alias: ' ' // 別名，即實際輸出。若不定義，則取code
+  }
+  ```
+
 - delete-key [String]：指定刪除鍵
+
 - confirm-key [String]：指定確認鍵
 
 ### 事件
 
 - on-key-click (key)：普通按鍵點擊時觸發
 - on-delete ()：刪除按鈕點擊時觸發
+
+## 更新日誌
+
+- 增加plugin註冊方式；
+- 支持定義複雜鍵盤；
+- 增加長按刪除功能；
+- 因click事件的0.3秒原因，內部將 `click` 事件置換成 `touchend` 事件；
+
+## TODO
+
+- [x] plugin使用
+- [ ] 加幾個默認鍵盤
 
 ## 聯繫與討論
 
