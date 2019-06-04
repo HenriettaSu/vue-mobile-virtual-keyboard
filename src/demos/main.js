@@ -3,7 +3,7 @@ import FastClick from 'fastclick';
 import VueRouter from 'vue-router';
 import router from './router/index';
 import App from './App';
-import KeyboardPlugin from './plugin/keyboard';
+import { KeyboardPlugin } from 'vue-mobile-virtual-keyboard';
 
 Vue.use(VueRouter);
 Vue.use(KeyboardPlugin);

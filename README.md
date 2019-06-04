@@ -1,4 +1,4 @@
-# vue-keyboard 1.0.0
+# vue-mobile-virtual-keyboard 1.0.1
 
 受夠了需求老是要求【只能輸入純數字】【只能輸入身份證】的要求了
 
@@ -14,6 +14,12 @@
 
 ![運行](./demo.png)
 
+## 安裝
+
+```shell
+$ npm install vue-mobile-virtual-keyboard -s
+```
+
 ## 註冊
 
 ### 全局註冊
@@ -21,7 +27,7 @@
 ```javascript
 // 在入口文件全局引入
 import Vue from 'vue';
-import KeyboardComponent from './plugin/keyboard';
+import { KeyboardComponent } from 'vue-mobile-virtual-keyboard';
 
 Vue.component(KeyboardComponent);
 ```
@@ -30,11 +36,11 @@ Vue.component(KeyboardComponent);
 
 ```vue
 <script>
-import keyboard from './../components/keyboard.vue';
+import { Keyboard } from 'vue-mobile-virtual-keyboard';
 
 export default {
   components: {
-    keyboard
+    Keyboard
   }
 }
 </script>
@@ -44,7 +50,7 @@ export default {
 
 考慮到自由性，暫時不準備將組件和 `input` 強綁定在一起，缺點就是值要自己處理了
 
-下例為精簡demo，如果一個頁面中存在兩個不同佈局的鍵盤，可詳細參看完整demo：`src/pages/index.vue`
+下例為精簡demo，如果一個頁面中存在兩個不同佈局的鍵盤，可詳細參看完整demo：`src/demos/index.vue`
 
 ### 插件使用
 
@@ -134,6 +140,12 @@ this.$keyboard.update({
 - on-delete ()：刪除按鈕點擊時觸發
 
 ## 更新日誌
+
+2019.06.04.002
+
+- 發佈npm包；
+
+2019.06.04.001
 
 - 增加plugin註冊方式；
 - 支持定義複雜鍵盤；

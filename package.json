@@ -1,9 +1,8 @@
 {
-  "name": "vue-keyboard",
-  "version": "1.0.0",
+  "name": "vue-mobile-virtual-keyboard",
+  "version": "1.0.1",
   "description": "A keyboard component in vue.",
   "author": "Henrie's Mac <zenoduaciosiua@hotmail.com>",
-  "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
@@ -76,5 +75,19 @@
   "browserslist": [
     "iOS >= 7",
     "Android >= 4.1"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HenriettaSu/vue-mobile-virtual-keyboard.git"
+  },
+  "keywords": [
+    "vue-keyboard",
+    "keyboard",
+    "vue"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HenriettaSu/vue-mobile-virtual-keyboard/issues"
+  },
+  "homepage": "https://github.com/HenriettaSu/vue-mobile-virtual-keyboard#readme"
 }
