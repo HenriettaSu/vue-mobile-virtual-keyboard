@@ -1,14 +1,19 @@
-# vue-mobile-virtual-keyboard 1.0.1
+# vue-mobile-virtual-keyboard 1.1.0
 
 受夠了需求老是要求【只能輸入純數字】【只能輸入身份證】的要求了
+
+受夠了已經給設置自動展開數字鍵盤了，還硬是要自己點成英文輸入法，然後跟妳講【這裡不應該可以輸入英文】的xx測試
 
 受夠了動不動就正則替換的人了
 
 受夠了第三方輸入法的單詞聯想了
 
-我要有一個自定義的鍵盤！
+我要有一個鍵盤：
 
-支持插件形式調用
+- 支持插件形式調用；
+- 默認帶【身份證】【數字】【金額】鍵盤；
+- 隨便自定義鍵盤佈局；
+- ui要改主題，無所畏懼；
 
 ## 長這樣
 
@@ -27,9 +32,9 @@ $ npm install vue-mobile-virtual-keyboard -s
 ```javascript
 // 在入口文件全局引入
 import Vue from 'vue';
-import { KeyboardComponent } from 'vue-mobile-virtual-keyboard';
+import { KeyboardPlugin } from 'vue-mobile-virtual-keyboard';
 
-Vue.component(KeyboardComponent);
+Vue.use(KeyboardPlugin);
 ```
 
 ### 局部註冊
@@ -50,7 +55,7 @@ export default {
 
 考慮到自由性，暫時不準備將組件和 `input` 強綁定在一起，缺點就是值要自己處理了
 
-下例為精簡demo，如果一個頁面中存在兩個不同佈局的鍵盤，可詳細參看完整demo：`src/demos/index.vue`
+下例為精簡demo，可詳細參看完整demo：`src/demos/index.vue` 或 `src/pages/index.vue`
 
 ### 插件使用
 
@@ -69,7 +74,7 @@ this.$keyboard.isVisible();
 
 // 更新配置
 this.$keyboard.update({
-    propKeyList: lowerKeyList
+    type: lowerKeyList
 });
 ```
 
@@ -114,25 +119,31 @@ this.$keyboard.update({
 
 - show [Boolean]：顯示
 
-- propKey-list [Array]：鍵盤keymap，默認為九宮數字鍵盤
+- type [String, Array]：鍵盤keymap，默認為九宮數字鍵盤
 
-  數組中按鈕接收三種格式：String，Number，Object
+  1. 支持內置類型 `number`，`chinaCardId`，`digit`
 
-  [String，Number]：每一行的按鍵大小為 `(100 / 當行按鍵數)%`
+  2. 也支持傳佈局數組，數組中按鈕接收三種格式：String，Number，Object
 
-  [Object]：必須定義 `code` 和 `span` 屬性，`alias` 選填
+    [String，Number]：每一行的按鍵大小為 `(100 / 當行按鍵數)%`
 
-  ```javascript
-  {
-      code: 'space', // 按鍵顯示名
-      span: '5/8', // 佔用寬度，分子/分母
-      alias: ' ' // 別名，即實際輸出。若不定義，則取code
-  }
-  ```
+    [Object]：必須定義 `code` 和 `span` 屬性，`alias` 選填
+
+    ```javascript
+    {
+        code: 'space', // 按鍵顯示名
+        span: '5/8', // 佔用寬度，分子/分母
+        alias: ' ' // 別名，即實際輸出。若不定義，則取code
+    }
+    ```
 
 - delete-key [String]：指定刪除鍵
 
 - confirm-key [String]：指定確認鍵
+
+- title [String]：鍵盤標題
+
+- prefix-cls [String]：樣式前綴，以重寫樣式
 
 ### 事件
 
@@ -141,11 +152,14 @@ this.$keyboard.update({
 
 ## 更新日誌
 
-2019.06.04.002
+2019.06.05 - 1.1.0
 
-- 發佈npm包；
+- 增加 `type` 屬性，接收內置鍵盤類型 `number`、`chinaCardId`、`digit` 或數組；
+- `propKeyList` 屬性變更為 `type` 屬性；
+- 支持鍵盤樣式自定義；
+- 支持鍵盤加標題；
 
-2019.06.04.001
+2019.06.04.001 - 1.0.1
 
 - 增加plugin註冊方式；
 - 支持定義複雜鍵盤；
@@ -155,7 +169,8 @@ this.$keyboard.update({
 ## TODO
 
 - [x] plugin使用
-- [ ] 加幾個默認鍵盤
+- [x] 加幾個默認鍵盤
+- [ ] 允許擴展 `keymap`
 
 ## 聯繫與討論
 

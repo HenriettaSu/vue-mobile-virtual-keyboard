@@ -1,23 +1,29 @@
 <template>
   <div>
+    <div class="demo-title">plugin使用</div>
     <div class="demo-input">
-      <div class="demo-input-hd">宅電plugin</div>
+      <div class="demo-input-hd">宅電</div>
       <div class="demo-input-bd" @click="showDefaultKeyboardPlugin()">{{number}}</div>
     </div>
     <div class="demo-input">
-      <div class="demo-input-hd">身份證plugin</div>
-      <!-- 利用input的特性限制長度 -->
+      <div class="demo-input-hd">身份證</div>
       <div class="demo-input-bd" @click="showCardIdKeyboardPlugin()">
         <input ref="cardId" v-model="cardId" disabled="disabled" readonly="readonly" max="18">
       </div>
     </div>
     <div class="demo-input">
-      <div class="demo-input-hd">姓名plugin</div>
-      <!-- 利用input的特性限制長度 -->
+      <div class="demo-input-hd">姓名</div>
       <div class="demo-input-bd" @click="showEnglishKeyboardPlugin()">
         <input ref="name" v-model="name" disabled="disabled" readonly="readonly" max="18">
       </div>
     </div>
+    <div class="demo-input">
+      <div class="demo-input-hd">金額</div>
+      <div class="demo-input-bd" @click="showDigitKeyboardPlugin()">
+        <input ref="digit" v-model="digit" disabled="disabled" readonly="readonly"">
+      </div>
+    </div>
+    <div class="demo-title">template使用</div>
     <div class="demo-input">
       <div class="demo-input-hd">身份證</div>
       <!-- 利用input的特性限制長度 -->
@@ -31,11 +37,19 @@
         <input ref="phoneNumber" v-model="phoneNumber" disabled="disabled" readonly="readonly" max="11">
       </div>
     </div>
-    <keyboard :show.sync="showKeyboard" :prop-key-list="numberKeyList" @on-key-click="onKeyClick" @on-delete="onDelete"></keyboard>
+    <div class="demo-input">
+      <div class="demo-input-hd">金額</div>
+      <div class="demo-input-bd" @click="showDigitKeyboard('digit')">
+        <input ref="digit" v-model="digit" disabled="disabled" readonly="readonly" max="11">
+      </div>
+    </div>
+    <keyboard :show.sync="showKeyboard" :type="keyboardType" @on-key-click="onKeyClick" @on-delete="onDelete"></keyboard>
   </div>
 </template>
 
 <script>
+//    npm安裝引用
+//    import { Keyboard } from 'vue-mobile-virtual-keyboard';
     import keyboard from './../components/keyboard.vue';
 
     export default {
@@ -51,7 +65,8 @@
                 name: '',
                 phoneNumber: '',
                 showKeyboard: false,
-                numberKeyList: []
+                digit: '',
+                keyboardType: ''
             }
         },
         mounted () {
@@ -74,10 +89,8 @@
             showCardIdKeyboardPlugin () {
                 let vm = this;
                 this.$keyboard.show({
-                    propKeyList: [['1', '2', '3'],
-                        ['4', '5', '6'],
-                        ['7', '8', '9'],
-                        ['X', '0', '删除']],
+                    title: '我猜會有需求想要這個',
+                    type: 'chinaCardId',
                     onKeyClick (key) {
                         if (vm.cardId.length + 1 === parseInt(vm.$refs['cardId'].max)) {
                             return;
@@ -131,15 +144,15 @@
                     ];
                 this.$keyboard.show({
                     deleteKey: '←',
-                    propKeyList: lowerKeyList,
+                    type: lowerKeyList,
                     onKeyClick (key) {
                         if (key === '⇧') {
                             vm.$keyboard.update({
-                                propKeyList: upperKeyList
+                                type: upperKeyList
                             });
                         } else if (key === '⇩') {
                             vm.$keyboard.update({
-                                propKeyList: lowerKeyList
+                                type: lowerKeyList
                             });
                         } else if (key === 'send') {
                             vm.$keyboard.hide();
@@ -152,20 +165,37 @@
                     }
                 });
             },
+            showDigitKeyboardPlugin () {
+                let vm = this;
+                this.$keyboard.show({
+                    type: 'digit',
+                    prefixCls: 'dark-',
+                    onKeyClick (key) {
+                        vm.digit += key;
+                    },
+                    onDelete () {
+                        vm.digit = vm.digit.slice(0, vm.digit.length - 1);
+                    }
+                });
+            },
             // 局部註冊使用
             toShowKeyboard (target) { // 傳遞編輯target
                 this.target = target;
                 this.showKeyboard = true;
             },
             showDefaultKeyboard (target) {
-                this.numberKeyList = [];
+                this.keyboardType = 'number';
                 this.toShowKeyboard(target);
             },
             showCardIdKeyboard (target) {
-                this.numberKeyList = [['1', '2', '3'],
+                this.keyboardType = [['1', '2', '3'],
                     ['4', '5', '6'],
                     ['7', '8', '9'],
                     ['X', '0', '删除']];
+                this.toShowKeyboard(target);
+            },
+            showDigitKeyboard (target) {
+                this.keyboardType = 'digit';
                 this.toShowKeyboard(target);
             },
             onKeyClick (key) {
@@ -213,6 +243,53 @@
         opacity: 1;
         -webkit-text-fill-color: #999;
         background-color: transparent;
+      }
+    }
+  }
+  .demo-title {
+    margin: 0.8rem;
+    color: #0f99ff;
+  }
+
+  /* 自定義鍵盤樣式 */
+  @keyMargin: 0.4rem;
+  .dark-keyboard-mask {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+  }
+  .dark-keyboard {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 1001;
+    background-color: #333;
+    .dark-keyboard-row {
+      display: flex;
+      margin-top: @keyMargin;
+      &:last-child {
+        margin-bottom: @keyMargin;
+      }
+      .dark-keyboard-key {
+        background-color: #666;
+        color: #fff;
+        font-size: 1.2rem;
+        border-radius: 0.3rem;
+        &.active {
+          background-color: #444;
+          color: #fff;
+        }
+      }
+      .dark-keyboard-key, .dark-keyboard-key-blank {
+        display: block;
+        text-align: center;
+        padding: 0.3rem;
+        &:nth-child(1) {
+          margin-left: @keyMargin;
+        }
+        margin-right: @keyMargin;
       }
     }
   }

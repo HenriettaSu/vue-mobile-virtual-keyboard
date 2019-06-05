@@ -3,6 +3,8 @@ import FastClick from 'fastclick';
 import VueRouter from 'vue-router';
 import router from './router/index';
 import App from './App';
+// npm安裝引用
+// import { KeyboardPlugin } from 'vue-mobile-virtual-keyboard';
 import KeyboardPlugin from './plugin/keyboard';
 
 Vue.use(VueRouter);

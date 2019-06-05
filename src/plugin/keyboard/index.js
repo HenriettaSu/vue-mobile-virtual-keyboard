@@ -42,15 +42,18 @@ const plugin = {
             });
             document.body.appendChild($vm.$el);
         }
+        const defaults = {},
+            props = $vm.$options.props;
+        for (let i in props) {
+            defaults[i] = props[i].default;
+        }
         const keyboard = {
             show (options = {}) {
                 watcher && watcher();
                 watcher = $vm.$watch('showSync', (val) => {
                     $vm.show = val;
                 });
-                if (!options.propKeyList) {
-                    options.propKeyList = [];
-                }
+                util.deepClone($vm, defaults);
                 util.deepClone($vm, options);
                 $vm.show = true;
             },
