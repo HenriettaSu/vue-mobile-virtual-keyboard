@@ -104,25 +104,6 @@
             },
             showEnglishKeyboardPlugin () {
                 let vm = this,
-                    lowerKeyList = [
-                        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-                        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-                        ['⇧', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '←'],
-                        [{
-                            code: '.',
-                            span: '1/16'
-                        }, {
-                            code: ',',
-                            span: '1/16'
-                        }, {
-                            code: 'space',
-                            span: '5/8',
-                            alias: ' '
-                        }, {
-                            code: 'send',
-                            span: '2/8'
-                        }]
-                    ],
                     upperKeyList = [
                         ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
                         ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -144,7 +125,7 @@
                     ];
                 this.$keyboard.show({
                     deleteKey: '←',
-                    type: lowerKeyList,
+                    type: 'englishLowercase', // 在入口文件擴展過keymap
                     onKeyClick (key) {
                         if (key === '⇧') {
                             vm.$keyboard.update({
@@ -152,7 +133,7 @@
                             });
                         } else if (key === '⇩') {
                             vm.$keyboard.update({
-                                type: lowerKeyList
+                                type: 'englishLowercase'
                             });
                         } else if (key === 'send') {
                             vm.$keyboard.hide();

@@ -82,7 +82,7 @@
                         this.keyList = keymap.number;
                         console.error('數組為空，展開默認鍵盤');
                         console.error('Empty array is passed. Default keyboard is shown.');
-                        console.error('空配列を取りますので、初期キーボードに戻ります');
+                        console.error('空配列を取得するので、初期キーボードに戻ります');
                     }
                 }
             }

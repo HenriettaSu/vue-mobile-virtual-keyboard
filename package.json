@@ -1,6 +1,6 @@
 {
   "name": "vue-mobile-virtual-keyboard",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "A keyboard component in vue.",
   "author": "Henrie's Mac <zenoduaciosiua@hotmail.com>",
   "scripts": {

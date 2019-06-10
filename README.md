@@ -1,4 +1,4 @@
-# vue-mobile-virtual-keyboard 1.1.0
+# vue-mobile-virtual-keyboard 1.2.0
 
 受夠了需求老是要求【只能輸入純數字】【只能輸入身份證】的要求了
 
@@ -55,7 +55,7 @@ export default {
 
 考慮到自由性，暫時不準備將組件和 `input` 強綁定在一起，缺點就是值要自己處理了
 
-下例為精簡demo，可詳細參看完整demo：`src/demos/index.vue` 或 `src/pages/index.vue`
+下例為精簡demo，可詳細參看完整demo：`src/pages/index.vue`
 
 ### 插件使用
 
@@ -150,27 +150,54 @@ this.$keyboard.update({
 - on-key-click (key)：普通按鍵點擊時觸發
 - on-delete ()：刪除按鈕點擊時觸發
 
+### KeyboardPlugin
+
+- extend (options = {}, hard)：擴展內置 `keymap` 鍵盤類型
+
+  `options` 為擴展的對象，子屬性 `value` 僅接收 `Array` 
+
+  `hard` 是否強制複寫已有鍵盤類型，默認否
+
+  ```javascript
+  import { KeyboardPlugin } from 'vue-mobile-virtual-keyboard';
+
+  // 擴展內置鍵盤
+  KeyboardPlugin.extend({
+      englishLowercase: [
+          ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'ü'],
+          ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä'],
+          ['⇧', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '←'],
+          [{
+              code: '.',
+              span: '1/16'
+          }, {
+              code: ',',
+              span: '1/16'
+          }, {
+              code: 'space',
+              span: '5/8',
+              alias: ' '
+          }, {
+              code: 'send',
+              span: '2/8'
+          }]
+      ]
+  }, false); // 如果想複寫默認已有的鍵盤類型，false -> true
+
+  Vue.use(KeyboardPlugin);
+  ```
+
 ## 更新日誌
 
-2019.06.05 - 1.1.0
+2019.06.10 - 1.2.0
 
-- 增加 `type` 屬性，接收內置鍵盤類型 `number`、`chinaCardId`、`digit` 或數組；
-- `propKeyList` 屬性變更為 `type` 屬性；
-- 支持鍵盤樣式自定義；
-- 支持鍵盤加標題；
-
-2019.06.04.001 - 1.0.1
-
-- 增加plugin註冊方式；
-- 支持定義複雜鍵盤；
-- 增加長按刪除功能；
-- 因click事件的0.3秒原因，內部將 `click` 事件置換成 `touchend` 事件；
+- 支持擴展內置鍵盤類型 `keymap`；
 
 ## TODO
 
 - [x] plugin使用
 - [x] 加幾個默認鍵盤
-- [ ] 允許擴展 `keymap`
+- [x] 允許擴展 `keymap`
 
 ## 聯繫與討論
 

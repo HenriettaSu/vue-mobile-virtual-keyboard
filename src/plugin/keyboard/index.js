@@ -1,4 +1,5 @@
 import KeyboardComponent from '../../components/keyboard.vue';
+import keymap from '../../utils/keymap';
 
 let $vm,
     watcher,
@@ -75,6 +76,22 @@ const plugin = {
                 this.$keyboard = vue.$keyboard;
             }
         });
+    },
+    extend (options = {}, hard) {
+        for (let key in options) {
+            let val = options[key];
+            if (Object.prototype.toString.call(val) !== '[object Array]') {
+                console.error('Expected Array, but got value ' + JSON.stringify(val) + '.');
+            } else if (keymap[key]) {
+                if (hard) {
+                    keymap[key] = options[key];
+                } else {
+                    console.warn(key + 'could not be overwrite when parameter "hard" is False.');
+                }
+            } else {
+                keymap[key] = options[key];
+            }
+        }
     }
 }
 
