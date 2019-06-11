@@ -1,4 +1,4 @@
-# vue-mobile-virtual-keyboard 1.2.0
+# vue-mobile-virtual-keyboard 1.2.1
 
 受夠了需求老是要求【只能輸入純數字】【只能輸入身份證】的要求了
 
@@ -11,8 +11,11 @@
 我要有一個鍵盤：
 
 - 支持插件形式調用；
+
 - 默認帶【身份證】【數字】【金額】鍵盤；
+
 - 隨便自定義鍵盤佈局；
+
 - ui要改主題，無所畏懼；
 
 ## 長這樣
@@ -26,6 +29,8 @@ $ npm install vue-mobile-virtual-keyboard -s
 ```
 
 ## 註冊
+
+推薦全局安裝plugin使用
 
 ### 全局註冊
 
@@ -145,14 +150,39 @@ this.$keyboard.update({
 
 - prefix-cls [String]：樣式前綴，以重寫樣式
 
+- z-index [String, Number]：鍵盤z-index值，默認1001
+
+- mask-z-index [String, Number]：透明遮罩層z-index值，默認1000
+
 ### 事件
 
 - on-key-click (key)：普通按鍵點擊時觸發
 - on-delete ()：刪除按鈕點擊時觸發
 
-### KeyboardPlugin
+## KeyboardPlugin
 
-- extend (options = {}, hard)：擴展內置 `keymap` 鍵盤類型
+### Config
+
+所有屬性都可以在注入時配置默認值
+
+```javascript
+let cfg = {
+    alias: '$meinKeyboard', // 默認$keyboard，若衝突可更改
+    deleteKey: '刪除',
+    confirmKey: '确定',
+    type: '',
+    prefixCls: '',
+    title: '',
+    zIndex: 1001,
+    maskZIndex: 1000
+}
+
+Vue.use(KeyboardPlugin, cfg);
+```
+
+### API
+
+- extend (options = {}, hard  = false)：擴展內置 `keymap` 鍵盤類型
 
   `options` 為擴展的對象，子屬性 `value` 僅接收 `Array` 
 
@@ -189,9 +219,11 @@ this.$keyboard.update({
 
 ## 更新日誌
 
-2019.06.10 - 1.2.0
+2019.06.11 - 1.2.1
 
-- 支持擴展內置鍵盤類型 `keymap`；
+- 支持更改插件注入名稱；
+- 支持plugin註冊配置默認值；
+- 支持修改鍵盤和遮罩層 `z-index` 值；
 
 ## TODO
 

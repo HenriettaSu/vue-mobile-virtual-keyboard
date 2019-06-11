@@ -37,6 +37,7 @@ let $vm,
 const plugin = {
     install (vue, pluginOptions = {}) {
         const Keyboard = vue.extend(KeyboardComponent);
+        let alias = pluginOptions.alias || '$keyboard';
         if (!$vm) {
             $vm = new Keyboard({
                 el: document.createElement('div')
@@ -55,6 +56,7 @@ const plugin = {
                     $vm.show = val;
                 });
                 util.deepClone($vm, defaults);
+                util.deepClone($vm, pluginOptions);
                 util.deepClone($vm, options);
                 $vm.show = true;
             },
@@ -69,11 +71,11 @@ const plugin = {
             }
         }
 
-        vue.$keyboard = keyboard;
+        vue[alias] = keyboard;
 
         vue.mixin({
             created: function () {
-                this.$keyboard = vue.$keyboard;
+                this[alias] = vue[alias];
             }
         });
     },
@@ -86,7 +88,7 @@ const plugin = {
                 if (hard) {
                     keymap[key] = options[key];
                 } else {
-                    console.warn(key + 'could not be overwrite when parameter "hard" is False.');
+                    console.warn(key + 'could not be overwrite when parameter "hard" is not True.');
                 }
             } else {
                 keymap[key] = options[key];

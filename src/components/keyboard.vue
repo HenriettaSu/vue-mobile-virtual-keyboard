@@ -1,8 +1,8 @@
 <!-- Type: component -->
 <template>
   <div v-if="showSync">
-    <div :class="prefixCls + 'keyboard-mask'" @touchstart="showSync = false"></div>
-    <div :class="prefixCls + 'keyboard'">
+    <div :class="prefixCls + 'keyboard-mask'" :style="{zIndex: maskZIndex}" @touchstart="showSync = false"></div>
+    <div :class="prefixCls + 'keyboard'" :style="{zIndex: zIndex}">
       <p class="keyboard-title" v-if="title">{{title}}</p>
       <div :class="prefixCls + 'keyboard-row'" v-for="keys in keyList">
         <template v-for="key in keys">
@@ -45,6 +45,14 @@
             title: {
                 type: String,
                 default: ''
+            },
+            zIndex: {
+                type: [String, Number],
+                default: '1001'
+            },
+            maskZIndex: {
+                type: [String, Number],
+                default: '1000'
             }
         },
         data () {
@@ -155,13 +163,11 @@
     top: 0;
     width: 100%;
     height: 100vh;
-    z-index: 1000;
   }
   .keyboard {
     position: fixed;
     width: 100%;
     bottom: 0;
-    z-index: 1001;
     background-color: @keyboard-bg-color;
     .keyboard-title {
       color: @keyboard-title-font-color;

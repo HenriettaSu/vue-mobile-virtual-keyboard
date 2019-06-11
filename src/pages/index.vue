@@ -239,13 +239,11 @@
     top: 0;
     width: 100%;
     height: 100vh;
-    z-index: 1000;
   }
   .dark-keyboard {
     position: fixed;
     width: 100%;
     bottom: 0;
-    z-index: 1001;
     background-color: #333;
     .dark-keyboard-row {
       display: flex;
