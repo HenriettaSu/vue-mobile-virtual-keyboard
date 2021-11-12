@@ -1,5 +1,7 @@
 # vue-mobile-virtual-keyboard 1.2.1
 
+[DEMO]: http://139.196.220.25/demo/vue-mobile-virtual-keyboard/#/index
+
 受夠了需求老是要求【只能輸入純數字】【只能輸入身份證】的要求了
 
 受夠了已經給設置自動展開數字鍵盤了，還硬是要自己點成英文輸入法，然後跟妳講【這裡不應該可以輸入英文】的xx測試
@@ -190,7 +192,7 @@ Vue.use(KeyboardPlugin, cfg);
 
   ```javascript
   import { KeyboardPlugin } from 'vue-mobile-virtual-keyboard';
-
+  
   // 擴展內置鍵盤
   KeyboardPlugin.extend({
       englishLowercase: [
@@ -213,7 +215,7 @@ Vue.use(KeyboardPlugin, cfg);
           }]
       ]
   }, false); // 如果想複寫默認已有的鍵盤類型，false -> true
-
+  
   Vue.use(KeyboardPlugin);
   ```
 

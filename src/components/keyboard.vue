@@ -3,7 +3,9 @@
   <div v-if="showSync">
     <div :class="prefixCls + 'keyboard-mask'" :style="{zIndex: maskZIndex}" @touchstart="showSync = false"></div>
     <div :class="prefixCls + 'keyboard'" :style="{zIndex: zIndex}">
-      <p class="keyboard-title" v-if="title">{{title}}</p>
+      <div :class="prefixCls + 'keyboard-header'">
+        <p class="keyboard-title" v-if="title">{{title}}</p>
+      </div>
       <div :class="prefixCls + 'keyboard-row'" v-for="keys in keyList">
         <template v-for="key in keys">
           <span :class="prefixCls + 'keyboard-key-blank'" :style="{'width': key.span ? renderWidth(key.span) : (100 / keys.length) + '%'}" v-if="key === '' || key.code === ''"></span>
@@ -169,10 +171,12 @@
     width: 100%;
     bottom: 0;
     background-color: @keyboard-bg-color;
+    .keyboard-header {
+      margin: 0.8rem;
+    }
     .keyboard-title {
       color: @keyboard-title-font-color;
       text-align: center;
-      margin: 0.8rem;
     }
     .keyboard-row {
       display: flex;
