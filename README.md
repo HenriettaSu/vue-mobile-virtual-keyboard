@@ -1,6 +1,6 @@
 # vue-mobile-virtual-keyboard 1.2.1
 
-[DEMO]: http://139.196.220.25/demo/vue-mobile-virtual-keyboard/#/index
+[DEMO](http://139.196.220.25/demo/vue-mobile-virtual-keyboard/#/index )
 
 受夠了需求老是要求【只能輸入純數字】【只能輸入身份證】的要求了
 
